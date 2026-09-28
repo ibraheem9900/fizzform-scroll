@@ -7,3 +7,9 @@ Source: live WebDev preview at https://3000-ihz2434g85nyq3k3ez8ac-3b342d7e.us4.m
 - Lower sections: ritual / signal / ingredients / flavor selector are reachable in the document and extracted successfully by browser_view.
 - End of page: shop CTA and footer render correctly; CTA button is keyboard/click reachable and changes to an ordered confirmation state.
 - Accessibility: semantic section headings, alt text on the product render, visible focus outlines, and prefers-reduced-motion media query included.
+
+Navbar and branding verification — 2026-09-28
+
+Source: WebDev preview at https://3000-ihz2434g85nyq3k3ez8ac-3b342d7e.us4.manus.computer/
+
+The desktop screenshot shows a solid dark navbar that no longer blends with or overlays the hero content. The mobile screenshot shows the compact brand lockup and contained circular menu button with no horizontal collisions. After scrolling, the navbar remains legible as a compact dark surface while the scroll-driven hero continues. TypeScript and the production build both pass.

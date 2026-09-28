@@ -35,6 +35,7 @@ export default function Home() {
   const stageRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
   const [activeSection, setActiveSection] = useState("drop");
+  const [isScrolled, setIsScrolled] = useState(false);
   const [activeFlavor, setActiveFlavor] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [ordered, setOrdered] = useState(false);
@@ -49,6 +50,7 @@ export default function Home() {
         const rect = node.getBoundingClientRect();
         const travel = Math.max(node.offsetHeight - window.innerHeight, 1);
         setProgress(clamp(-rect.top / travel));
+        setIsScrolled(window.scrollY > 24);
 
         const marker = window.scrollY + window.innerHeight * 0.38;
         const ids = ["drop", "ritual", "signal", "shop"];
@@ -86,10 +88,12 @@ export default function Home() {
 
   return (
     <main className="site-shell" style={{ "--flavor": current.color, "--flavor-accent": current.accent } as React.CSSProperties}>
-      <header className="topbar">
+      <header className={isScrolled ? "topbar topbar-scrolled" : "topbar"}>
         <button className="wordmark" onClick={() => scrollTo("drop")} aria-label="FIZZFORM home">
-          <span className="wordmark-dot" />
-          FIZZFORM
+          <span className="brand-symbol" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="presentation"><rect width="32" height="32" rx="10" fill="currentColor" /><path d="M10 8h13v4h-8v3h7v4h-7v5h-5V8Z" fill="#28110d" /><circle cx="24" cy="23" r="2" fill="#28110d" /></svg>
+          </span>
+          <span className="brand-name">FIZZFORM</span>
         </button>
         <nav className="desktop-nav" aria-label="Main navigation">
           {["drop", "ritual", "signal", "shop"].map((id) => (
@@ -264,7 +268,7 @@ export default function Home() {
       </section>
 
       <footer className="footer">
-        <button className="wordmark" onClick={() => scrollTo("drop")}><span className="wordmark-dot" />FIZZFORM</button>
+        <button className="wordmark" onClick={() => scrollTo("drop")}><span className="brand-symbol" aria-hidden="true"><svg viewBox="0 0 32 32" role="presentation"><rect width="32" height="32" rx="10" fill="currentColor" /><path d="M10 8h13v4h-8v3h7v4h-7v5h-5V8Z" fill="#28110d" /><circle cx="24" cy="23" r="2" fill="#28110d" /></svg></span><span className="brand-name">FIZZFORM</span></button>
         <span>Made for the little lift.</span>
         <div className="footer-links"><a href="#ritual">Instagram</a><a href="#signal">Ingredients</a><a href="#shop">Contact</a></div>
       </footer>
