@@ -1,0 +1,17 @@
+{
+  "name": "FIZZFORM — A brighter kind of buzz",
+  "short_name": "FIZZFORM",
+  "description": "Sparkling botanical soda for the little lift.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#28110d",
+  "theme_color": "#b9161d",
+  "icons": [
+    {
+      "src": "/fizzform-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
