@@ -12,7 +12,7 @@ import {
   Zap,
 } from "lucide-react";
 
-const canSrc = "/fizzform-can.png";
+const canSrc = "/fizzform-can.webp";
 
 type Flavor = {
   name: string;
