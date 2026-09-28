@@ -33,7 +33,9 @@ function clamp(value: number, min = 0, max = 1) {
 
 export default function Home() {
   const stageRef = useRef<HTMLElement>(null);
+  const signalRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
+  const [signalProgress, setSignalProgress] = useState(0);
   const [activeSection, setActiveSection] = useState("drop");
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeFlavor, setActiveFlavor] = useState(0);
@@ -50,6 +52,11 @@ export default function Home() {
         const rect = node.getBoundingClientRect();
         const travel = Math.max(node.offsetHeight - window.innerHeight, 1);
         setProgress(clamp(-rect.top / travel));
+        const signal = signalRef.current;
+        if (signal) {
+          const signalTravel = Math.max(signal.offsetHeight - window.innerHeight, 1);
+          setSignalProgress(clamp(-signal.getBoundingClientRect().top / signalTravel));
+        }
         setIsScrolled(window.scrollY > 24);
 
         const marker = window.scrollY + window.innerHeight * 0.38;
@@ -85,6 +92,11 @@ export default function Home() {
   const glowOpacity = 0.14 + progress * 0.42;
   const leftOpacity = clamp(1 - progress * 2.1);
   const rightOpacity = clamp((progress - 0.24) * 2.2);
+  const canReveal = clamp((signalProgress - 0.08) * 1.5);
+  const ingredientOne = clamp((signalProgress - 0.2) * 2.8);
+  const ingredientTwo = clamp((signalProgress - 0.42) * 2.8);
+  const ingredientThree = clamp((signalProgress - 0.64) * 2.8);
+  const openLid = clamp((signalProgress - 0.12) * 1.5);
 
   return (
     <main className="site-shell" style={{ "--flavor": current.color, "--flavor-accent": current.accent } as React.CSSProperties}>
@@ -186,31 +198,35 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="signal-section" id="signal">
-        <div className="signal-intro">
-          <p className="eyebrow"><span>03</span> The signal</p>
-          <h2>Built for<br /><em>the bright side.</em></h2>
-          <p className="section-deck">A clean, lively blend of citrus oils, adaptogenic botanicals, and just enough sparkle to make the ordinary feel switched on.</p>
-        </div>
-        <div className="ingredient-grid">
-          <article className="ingredient-card card-yellow">
-            <div className="card-icon"><Zap size={21} /></div>
-            <span className="card-index">01</span>
-            <h3>Bright<br />citrus</h3>
-            <p>Juicy blood orange and yuzu with a clean, electric lift.</p>
-          </article>
-          <article className="ingredient-card card-lime">
-            <div className="card-icon"><Leaf size={21} /></div>
-            <span className="card-index">02</span>
-            <h3>Real<br />botanicals</h3>
-            <p>A garden of mint, ginger and rosemary. Nothing synthetic.</p>
-          </article>
-          <article className="ingredient-card card-cream">
-            <div className="card-icon"><Sparkles size={21} /></div>
-            <span className="card-index">03</span>
-            <h3>Zero<br />sugar</h3>
-            <p>A crisp finish with no syrupy afterthought. Just refreshment.</p>
-          </article>
+      <section className="signal-section signal-reveal-section" id="signal" ref={signalRef}>
+        <div className="signal-sticky">
+          <div className="signal-glow" style={{ opacity: 0.18 + canReveal * 0.3 }} />
+          <div className="signal-intro">
+            <p className="eyebrow"><span>03</span> What's inside</p>
+            <h2>Open the<br /><em>good stuff.</em></h2>
+            <p className="section-deck">Scroll to crack the can. Every bright note lifts out one by one: real citrus, living botanicals, zero sugar.</p>
+          </div>
+
+          <div className="reveal-can" style={{ transform: `translate(-50%, calc(-50% + ${-openLid * 10}px)) rotate(${-8 + openLid * 8}deg) scale(${0.72 + canReveal * 0.2})`, opacity: 0.7 + canReveal * 0.3 }}>
+            <div className="reveal-can-halo" />
+            <img src={canSrc} alt="Opened FIZZFORM ruby citrus sparkling soda can" />
+            <div className="reveal-can-lid" style={{ transform: `translate(-50%, ${-openLid * 92}px) rotate(${-10 + openLid * 18}deg)`, opacity: 0.55 + openLid * 0.45 }} />
+            <div className="reveal-fizz" style={{ opacity: openLid, transform: `translate(-50%, ${-openLid * 42}px) scale(${0.8 + openLid * 0.3})` }}>✦</div>
+          </div>
+
+          <div className="ingredient-stack" aria-label="FIZZFORM ingredients">
+            <article className="reveal-ingredient ingredient-citrus" style={{ opacity: ingredientOne, transform: `translate3d(${(1 - ingredientOne) * 45}px, ${(1 - ingredientOne) * 18}px, 0)` }}>
+              <span className="reveal-number">01</span><Zap size={18} /><div><strong>Bright citrus</strong><p>Blood orange · yuzu</p></div>
+            </article>
+            <article className="reveal-ingredient ingredient-botanicals" style={{ opacity: ingredientTwo, transform: `translate3d(${(1 - ingredientTwo) * 45}px, ${(1 - ingredientTwo) * 18}px, 0)` }}>
+              <span className="reveal-number">02</span><Leaf size={18} /><div><strong>Real botanicals</strong><p>Mint · ginger · rosemary</p></div>
+            </article>
+            <article className="reveal-ingredient ingredient-zero" style={{ opacity: ingredientThree, transform: `translate3d(${(1 - ingredientThree) * 45}px, ${(1 - ingredientThree) * 18}px, 0)` }}>
+              <span className="reveal-number">03</span><Sparkles size={18} /><div><strong>Zero sugar</strong><p>15 kcal · clean finish</p></div>
+            </article>
+          </div>
+
+          <div className="signal-bottomline"><span>SCROLL TO REVEAL</span><div className="signal-progress"><span style={{ transform: `scaleX(${signalProgress})` }} /></div><strong>{String(Math.round(signalProgress * 100)).padStart(2, "0")}</strong></div>
         </div>
       </section>
 
