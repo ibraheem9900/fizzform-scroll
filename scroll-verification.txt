@@ -1,0 +1,9 @@
+FIZZFORM live verification — 2026-09-28
+
+Source: live WebDev preview at https://3000-ihz2434g85nyq3k3ez8ac-3b342d7e.us4.manus.computer/
+
+- Initial viewport: hero renders with red textured field, nav, oversized FIZZ FORWARD. typography, and the generated can entering from the lower edge.
+- Mid-hero scroll: the sticky stage remains pinned after changing .site-shell overflow from hidden to clip; can grows, rotates toward upright, shifts into center, and reveals the FIZZFORM label + badge.
+- Lower sections: ritual / signal / ingredients / flavor selector are reachable in the document and extracted successfully by browser_view.
+- End of page: shop CTA and footer render correctly; CTA button is keyboard/click reachable and changes to an ordered confirmation state.
+- Accessibility: semantic section headings, alt text on the product render, visible focus outlines, and prefers-reduced-motion media query included.
