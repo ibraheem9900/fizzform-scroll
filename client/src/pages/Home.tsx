@@ -57,6 +57,7 @@ export default function Home() {
   const [activeFlavor, setActiveFlavor] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [ordered, setOrdered] = useState(false);
+  const [revealedSections, setRevealedSections] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     let frame = 0;
@@ -94,6 +95,24 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setRevealedSections((current) => {
+          const next = { ...current };
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) next[entry.target.getAttribute("data-reveal") || ""] = true;
+          });
+          return next;
+        });
+      },
+      { threshold: 0.14, rootMargin: "0px 0px -10% 0px" },
+    );
+    nodes.forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+  }, []);
+
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMenuOpen(false);
@@ -114,6 +133,7 @@ export default function Home() {
   const ingredientThree = clamp((signalProgress - 0.64) * 2.8);
   const openLid = clamp((signalProgress - 0.12) * 1.5);
   const particleProgress = clamp((signalProgress - 0.16) * 1.7);
+  const revealClass = (id: string) => revealedSections[id] ? "section-reveal is-visible" : "section-reveal";
 
   return (
     <main className="site-shell" style={{ "--flavor": current.color, "--flavor-accent": current.accent } as React.CSSProperties}>
@@ -199,13 +219,13 @@ export default function Home() {
       </section>
 
       <section className="manifesto-section" id="ritual">
-        <div className="manifesto-copy">
+        <div className={revealClass("ritual-copy")} data-reveal="ritual-copy">
           <p className="eyebrow dark-eyebrow"><span>02</span> The ritual</p>
           <h2>Not a<br /><span>soft drink.</span></h2>
           <p className="section-deck">The ritual is simple: crack cold, take the long way, notice what happens next. FIZZFORM is built for the shift between one thing and the next.</p>
           <button className="outline-link" onClick={() => scrollTo("signal")}>See what's inside <ArrowUpRight size={16} /></button>
         </div>
-        <div className="manifesto-art">
+        <div className={`${revealClass("ritual-art")} manifesto-art`} data-reveal="ritual-art">
           <div className="art-ring ring-one" />
           <div className="art-ring ring-two" />
           <div className="art-sun"><Sparkles size={25} /></div>
@@ -260,14 +280,14 @@ export default function Home() {
       </section>
 
       <section className="flavor-section">
-        <div className="flavor-header">
+        <div className={revealClass("flavor-header")} data-reveal="flavor-header">
           <div>
             <p className="eyebrow dark-eyebrow"><span>04</span> Pick your frequency</p>
             <h2>Find your<br /><span>frequency.</span></h2>
           </div>
           <p className="section-deck flavor-deck">Three bright takes on a botanical soda. Tap a flavor to tune the can.</p>
         </div>
-        <div className="flavor-tabs" role="tablist" aria-label="Flavor options">
+        <div className={revealClass("flavor-tabs")} data-reveal="flavor-tabs" role="tablist" aria-label="Flavor options">
           {flavors.map((flavor, index) => (
             <button key={flavor.name} role="tab" aria-selected={activeFlavor === index} className={activeFlavor === index ? "flavor-tab active" : "flavor-tab"} onClick={() => setActiveFlavor(index)}>
               <span className="flavor-swatch" style={{ background: flavor.color }} />
@@ -276,7 +296,7 @@ export default function Home() {
             </button>
           ))}
         </div>
-        <div className="flavor-panel" style={{ background: current.color }}>
+        <div className={`${revealClass("flavor-panel")} flavor-panel`} data-reveal="flavor-panel" style={{ background: current.color }}>
           <div className="flavor-panel-copy">
             <span className="panel-kicker">FIZZFORM / {String(activeFlavor + 1).padStart(2, "0")}</span>
             <h3>{current.name}</h3>
@@ -294,7 +314,7 @@ export default function Home() {
       <section className="shop-section" id="shop">
         <div className="shop-marquee"><span>CRACK OPEN A BETTER MOMENT</span><span>CRACK OPEN A BETTER MOMENT</span></div>
         <div className="shop-content">
-          <div className="shop-copy">
+          <div className={revealClass("shop-copy")} data-reveal="shop-copy">
             <p className="eyebrow"><span>05</span> The first sip</p>
             <h2>Ready when<br /><em>you are.</em></h2>
             <p className="section-deck">One four-pack. Three flavors. Zero reason to keep the good stuff for later.</p>
@@ -303,7 +323,7 @@ export default function Home() {
             </button>
             <small className="fine-print">Ships cold-ish. Drinks fast. Cancel anytime.</small>
           </div>
-          <div className="shop-orbit">
+          <div className={revealClass("shop-orbit")} data-reveal="shop-orbit">
             <div className="orbit-line orbit-line-a" />
             <div className="orbit-line orbit-line-b" />
             <div className="orbit-copy">GOOD<br /><span>ENERGY</span><br />INSIDE</div>
@@ -312,7 +332,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="footer">
+      <footer className={`${revealClass("footer")} footer`} data-reveal="footer">
         <button className="wordmark" onClick={() => scrollTo("drop")}><span className="brand-symbol" aria-hidden="true"><svg viewBox="0 0 32 32" role="presentation"><rect width="32" height="32" rx="10" fill="currentColor" /><path d="M10 8h13v4h-8v3h7v4h-7v5h-5V8Z" fill="#28110d" /><circle cx="24" cy="23" r="2" fill="#28110d" /></svg></span><span className="brand-name">FIZZFORM</span></button>
         <span>Made for the little lift.</span>
         <div className="footer-links"><a href="#ritual">Instagram</a><a href="#signal">Ingredients</a><a href="#shop">Contact</a></div>

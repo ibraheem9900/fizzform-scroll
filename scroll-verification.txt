@@ -23,3 +23,9 @@ Verified the redesigned FIZZFORM navbar at desktop and mobile sizes: branded pil
 Verified the new signal section at multiple scroll positions: the dark reveal stage enters after the ritual section, the can scales into the spotlight, the lid lifts away, fizz marker appears, and ingredient callouts stage in sequence. At approximately 54% reveal progress, Bright Citrus is fully revealed and Real Botanicals is entering with lower opacity, confirming the staggered choreography rather than an all-at-once reveal.
 
 Production typecheck and build pass.
+
+Glass navbar and section motion verification — 2026-09-28
+
+The navbar now uses transparent layered gradients, 24px backdrop blur, saturation, a subtle lime edge, and a compact scrolled state. Desktop and mobile screenshots show the bar integrated with the hero rather than reading as a detached opaque block.
+
+Major sections now use IntersectionObserver-driven reveal choreography: ritual copy/art, flavor header/tabs/panel, shop copy/orbit, and footer enter with opacity, translate, blur, and staggered delays. The signal section retains its continuous scroll-driven can/ingredient/particle choreography. Production typecheck and build pass.
