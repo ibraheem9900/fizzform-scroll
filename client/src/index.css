@@ -136,6 +136,17 @@ h1 em, h2 em { color: #dfff4e; font-style: normal; }
 .reveal-can-halo { position: absolute; z-index: -1; inset: 12% -40% 5%; border: 1px solid rgba(223,255,78,.48); border-radius: 50%; box-shadow: 0 0 0 28px rgba(223,255,78,.04), 0 0 0 56px rgba(223,255,78,.035); transform: rotate(-12deg); }
 .reveal-can-lid { position: absolute; z-index: 2; top: 3%; left: 50%; width: 45%; height: 9%; background: linear-gradient(145deg, #f5eee2, #8e7771); border: 1px solid rgba(40,17,13,.65); border-radius: 50%; transform-origin: 50% 80%; box-shadow: 0 7px 8px rgba(0,0,0,.18); }
 .reveal-fizz { position: absolute; z-index: 4; top: 1%; left: 50%; color: #dfff4e; font-size: 30px; filter: drop-shadow(0 0 12px rgba(223,255,78,.8)); }
+.particle-field { position: absolute; z-index: 1; inset: -28% -54%; pointer-events: none; perspective: 700px; --particle-progress: 0; }
+.citrus-particle, .herb-particle { position: absolute; top: 50%; left: 50%; display: block; width: 42px; height: 42px; opacity: var(--particle-progress); transform: translate(-50%, -50%) translate3d(calc(var(--x) * var(--particle-progress)), calc(var(--y) * var(--particle-progress)), 0) rotate(var(--r)) scale(calc(var(--s) * var(--particle-progress))); transform-style: preserve-3d; transition: opacity .12s linear; animation: particle-drift 4.5s ease-in-out var(--delay) infinite; }
+.citrus-particle { filter: drop-shadow(7px 9px 4px rgba(40,17,13,.23)); }
+.citrus-wedge { position: absolute; inset: 3px; display: block; overflow: hidden; border: 2px solid #f9d84d; border-radius: 50%; background: conic-gradient(from 12deg, #fff2a4 0 10deg, #f3a52e 10deg 15deg, #ffd84d 15deg 75deg, #f5ad2b 75deg 80deg, #fff2a4 80deg 92deg, #ffd84d 92deg 150deg, #f5ad2b 150deg 156deg, #fff2a4 156deg 168deg, #ffd84d 168deg 230deg, #f5ad2b 230deg 236deg, #fff2a4 236deg 248deg, #ffd84d 248deg 310deg, #f5ad2b 310deg 316deg, #fff2a4 316deg 328deg, #ffd84d 328deg); box-shadow: inset -7px -6px 0 rgba(202,117,24,.22), inset 5px 5px 0 rgba(255,255,255,.32); transform: rotateX(58deg) rotateY(-14deg); }
+.citrus-wedge::after { content: ''; position: absolute; inset: 7px; border: 1px solid rgba(255,255,255,.68); border-radius: 50%; }
+.herb-particle { width: 60px; height: 58px; filter: drop-shadow(6px 9px 4px rgba(0,0,0,.2)); }
+.herb-stem { position: absolute; top: 4px; left: 29px; width: 3px; height: 51px; display: block; background: linear-gradient(#6f963b, #294c2f); border-radius: 99px; transform: rotate(24deg); transform-origin: bottom; }
+.herb-leaf { position: absolute; width: 24px; height: 11px; display: block; border-radius: 100% 0 100% 0; background: linear-gradient(135deg, #d1ef88, #4b873d 58%, #244e31); box-shadow: inset 4px 2px 0 rgba(255,255,255,.25); }
+.herb-leaf-a { top: 16px; left: 9px; transform: rotate(17deg); }
+.herb-leaf-b { top: 31px; left: 32px; transform: rotate(196deg); }
+.herb-particle::after { content: ''; position: absolute; top: 3px; left: 29px; width: 4px; height: 4px; border-radius: 50%; background: #dfff4e; box-shadow: 0 17px #dfff4e, 0 34px #dfff4e; opacity: .8; }
 .ingredient-stack { position: absolute; z-index: 4; top: 50%; right: 9vw; width: min(310px, 26vw); display: flex; flex-direction: column; gap: 11px; transform: translateY(-50%); }
 .reveal-ingredient { padding: 15px 16px; display: grid; grid-template-columns: 28px 23px 1fr; gap: 10px; align-items: center; color: #28110d; border-radius: 14px; box-shadow: 0 12px 24px rgba(0,0,0,.15); will-change: transform, opacity; }
 .reveal-ingredient strong { display: block; font: 600 17px/.95 'Space Grotesk', sans-serif; letter-spacing: -.04em; text-transform: uppercase; }
@@ -206,6 +217,7 @@ h1 em, h2 em { color: #dfff4e; font-style: normal; }
 
 @keyframes bob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(4px); } }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@keyframes particle-drift { 0%, 100% { margin-top: 0; } 50% { margin-top: -8px; } }
 
 @media (max-width: 850px) {
   .topbar { height: 68px; padding: 0 20px; }

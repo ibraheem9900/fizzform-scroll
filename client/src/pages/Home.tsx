@@ -27,6 +27,22 @@ const flavors: Flavor[] = [
   { name: "Tangerine pulse", note: "Tangerine · pink pepper · basil", color: "#f26834", accent: "#fff0cf" },
 ];
 
+const citrusParticles = [
+  { x: -175, y: -100, r: -24, s: 0.9, d: 0 },
+  { x: 155, y: -82, r: 28, s: 0.72, d: 0.08 },
+  { x: -198, y: 35, r: -8, s: 0.6, d: 0.16 },
+  { x: 190, y: 60, r: 18, s: 0.82, d: 0.24 },
+  { x: -116, y: 145, r: 14, s: 0.58, d: 0.32 },
+  { x: 118, y: 142, r: -18, s: 0.64, d: 0.4 },
+];
+
+const herbParticles = [
+  { x: -140, y: -42, r: -32, s: 0.9, d: 0.05 },
+  { x: 132, y: -18, r: 24, s: 0.75, d: 0.14 },
+  { x: -155, y: 92, r: 14, s: 0.68, d: 0.23 },
+  { x: 154, y: 105, r: -26, s: 0.85, d: 0.34 },
+];
+
 function clamp(value: number, min = 0, max = 1) {
   return Math.min(Math.max(value, min), max);
 }
@@ -97,6 +113,7 @@ export default function Home() {
   const ingredientTwo = clamp((signalProgress - 0.42) * 2.8);
   const ingredientThree = clamp((signalProgress - 0.64) * 2.8);
   const openLid = clamp((signalProgress - 0.12) * 1.5);
+  const particleProgress = clamp((signalProgress - 0.16) * 1.7);
 
   return (
     <main className="site-shell" style={{ "--flavor": current.color, "--flavor-accent": current.accent } as React.CSSProperties}>
@@ -212,6 +229,18 @@ export default function Home() {
             <img src={canSrc} alt="Opened FIZZFORM ruby citrus sparkling soda can" />
             <div className="reveal-can-lid" style={{ transform: `translate(-50%, ${-openLid * 92}px) rotate(${-10 + openLid * 18}deg)`, opacity: 0.55 + openLid * 0.45 }} />
             <div className="reveal-fizz" style={{ opacity: openLid, transform: `translate(-50%, ${-openLid * 42}px) scale(${0.8 + openLid * 0.3})` }}>✦</div>
+            <div className="particle-field" style={{ "--particle-progress": particleProgress } as React.CSSProperties} aria-hidden="true">
+              {citrusParticles.map((particle, index) => (
+                <span key={`citrus-${index}`} className="citrus-particle" style={{ "--x": `${particle.x}px`, "--y": `${particle.y}px`, "--r": `${particle.r}deg`, "--s": particle.s, "--delay": `${particle.d}s` } as React.CSSProperties}>
+                  <i className="citrus-wedge" />
+                </span>
+              ))}
+              {herbParticles.map((particle, index) => (
+                <span key={`herb-${index}`} className="herb-particle" style={{ "--x": `${particle.x}px`, "--y": `${particle.y}px`, "--r": `${particle.r}deg`, "--s": particle.s, "--delay": `${particle.d}s` } as React.CSSProperties}>
+                  <i className="herb-stem" /><i className="herb-leaf herb-leaf-a" /><i className="herb-leaf herb-leaf-b" />
+                </span>
+              ))}
+            </div>
           </div>
 
           <div className="ingredient-stack" aria-label="FIZZFORM ingredients">
